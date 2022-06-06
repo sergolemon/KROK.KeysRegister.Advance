@@ -11,7 +11,7 @@ RESTful
 
 Language: C#
 
-Platform: asp.net core
+Platform: asp.net core 6.0
 
 Clean architecture
 
