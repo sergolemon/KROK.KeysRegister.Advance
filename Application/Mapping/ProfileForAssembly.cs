@@ -17,13 +17,18 @@ namespace Application.Mapping
 
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
-            IEnumerable<Type> types = assembly.GetTypes().Where(type => type.IsClass && type.IsAssignableTo(typeof(IMap)));
+            IEnumerable<Type> types = assembly
+                .GetTypes()
+                .Where(type => 
+                    type.IsClass && 
+                    !type.IsAbstract && 
+                    type.IsAssignableTo(typeof(IMap))
+                );
 
             foreach(Type type in types)
             {
-                object? instance = Activator.CreateInstance(type);
-                MethodInfo? methodInfo = type.GetMethod("Mapping");
-                methodInfo?.Invoke(instance, new object[] { this });
+                IMap instance = (IMap)Activator.CreateInstance(type)!;
+                instance.Mapping(this);
             }
         }
     }
